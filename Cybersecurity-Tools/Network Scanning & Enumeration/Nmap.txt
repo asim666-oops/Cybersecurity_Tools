@@ -1,0 +1,89 @@
+📡 Nmap Commands and Their Purpose
+
+
+ℹ️ Help
+
+Command			Purpose
+nmap --help	Displays all Nmap options and usage
+
+🔍 Basic Scan
+
+Command    		Purpose
+nmap 192.168.0.200	Performs a basic scan to identify open ports using default settings
+
+🧪 Service & Script Scanning
+
+Command			Purpose
+nmap 192.168.0.200 -sV	Detects service versions running on open ports
+nmap 192.168.0.200 -sC	Runs default NSE scripts for common checks
+nmap 192.168.0.200 --script=vuln	Runs vulnerability detection scripts
+nmap --script=vulscan/vulscan.nse ip -sV	Uses Vulscan NSE script to detect known vulnerabilities
+nmap -sV --script vulners ip	Uses Vulners database to find CVEs based on service versions
+
+🖥️ OS & Aggressive Scanning
+
+Command			Purpose
+nmap 192.168.0.200 -O	Attempts to identify the operating system
+nmap 192.168.0.200 -A	Aggressive scan (OS detection, service detection, scripts, traceroute)
+
+⚡ Fast & Port-Specific Scanning
+
+Command			Purpose
+nmap 192.168.0.200 -F	Fast scan of top 100 common ports
+nmap 192.168.0.200 -p 21	Scans only port 21
+nmap 192.168.0.200 -p 21-30	Scans ports from 21 to 30
+nmap 192.168.0.200 -p 21,23,25	Scans only specified ports
+-p-	Scans all 65,535 TCP ports
+
+🔌 Scan Techniques
+
+Option	Purpose
+-sT	TCP Connect scan (full 3-way handshake, noisy but reliable)
+-sS	TCP SYN scan (half-open, stealthier)
+-sU	UDP scan
+-sX	Xmas scan (stealth scan using FIN, PSH, URG flags)
+
+🧭 Host Discovery
+
+Command				Purpose
+nmap -sn 192.168.0.248/24	Ping scan to discover live hosts only
+-PS[portlist]			TCP SYN ping discovery
+-PA[portlist]			TCP ACK ping discovery
+-PU[portlist]			UDP ping discovery
+-Pn				Treat all hosts as online (skip host discovery)
+-sL				List scan – lists targets without scanning
+
+⏱️ Timing & Performance
+
+Option					Purpose
+-T0					Paranoid (very slow, stealthy)
+-T1					Sneaky
+-T2					Polite
+-T3					Normal (default)
+-T4					Aggressive (commonly used in labs)
+-T5					Insane (very fast, noisy)
+--min-rate / --max-rate			Control packet sending rate
+--min-parallelism / --max-parallelism	Control parallel probes
+--host-timeout	                        Max time to wait for a host
+
+📤 Output & Reporting
+
+Option				Purpose
+-oN <file>			Normal output
+-oX <file>			XML output
+-oG <file>			Grep-able output
+-oA <basename>			Saves output in all formats
+nmap 192.168.0.200 -oN nmap	Saves scan result to file
+
+📢 Verbosity & Debugging
+
+Option	   	Purpose
+-v, -vv, -v4	Increase verbosity
+-d, -d9		Debugging output (very detailed)
+Press v during scan	Increase verbosity in real-time
+
+
+🧠 Tip (Very Important)
+
+Start with basic scan → service detection → scripts → targeted ports → aggressive scan.
+This shows a methodical and professional attacker mindset, not random scanning.

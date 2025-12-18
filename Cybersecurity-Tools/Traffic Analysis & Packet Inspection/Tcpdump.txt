@@ -1,0 +1,82 @@
+
+tcpdump is a powerful, command-line network packet analyzer that captures and displays TCP/IP and other network traffic in real-time, essential for troubleshooting network issues, security monitoring, and understanding network behavior by allowing deep inspection of individual packets on Linux, macOS, and Windows (via WinDump)
+
+> man tcpdump --> for manual
+
+1. Basic tcpdump Options
+
+Command 	Description
+tcpdump -i INTERFACE	Capture packets on a specific network interface
+tcpdump -w FILE	Write captured packets to a file
+tcpdump -r FILE	Read captured packets from a file
+tcpdump -c COUNT	Capture a specific number of packets
+tcpdump -n	Do not resolve IP addresses
+tcpdump -nn	Do not resolve IP addresses or protocol names
+tcpdump -v / -vv / -vvv	Increase verbosity
+
+Examples :-
+
+> tcpdump -i eth0 -c 50 -v
+  Capture 50 packets on eth0 and display them verbosely.
+
+> tcpdump -i wlo1 -w data.pcap
+  Capture packets on WiFi interface wlo1 and write to data.pcap.
+
+> tcpdump -i any -nn
+  Capture packets on all interfaces without resolving names or protocols.
+
+2. Host & Port Filtering
+
+Filter	                    Description
+tcpdump host IP	Filter packets by host IP
+tcpdump host HOSTNAME	Filter packets by hostname
+tcpdump src host IP	Filter by source host
+tcpdump dst host IP	Filter by destination host
+tcpdump port PORT	Filter by port number
+tcpdump src port PORT	Filter by source port
+tcpdump dst port PORT	Filter by destination port
+tcpdump PROTOCOL	Filter by protocol (ip, ip6, udp, tcp, icmp)
+
+Examples
+
+> tcpdump -i any tcp port 22
+  Capture SSH (TCP/22) traffic on all interfaces.
+
+> tcpdump -i wlo1 udp port 123
+  Capture NTP (UDP/123) traffic on WiFi interface.
+
+> tcpdump -i eth0 host example.com and tcp port 443 -w https.pcap
+ Capture HTTPS traffic to/from example.com and save to file.
+
+3. Output Formatting Options
+
+Command	      Description
+tcpdump -q	Quick output; brief info
+tcpdump -e	Show MAC addresses
+tcpdump -A	Print packets in ASCII
+tcpdump -xx	Print packets in hexadecimal
+tcpdump -X	Print packets in both hex and ASCII
+
+4. Filtering by TCP Flags
+
+You can check TCP flags using tcp[tcpflags].
+
+Available Flags
+
+tcp-syn
+tcp-ack
+tcp-fin
+tcp-rst
+tcp-push
+
+Examples :-
+
+Command	                                    Description
+tcpdump "tcp[tcpflags] == tcp-syn"	Capture packets with only SYN flag set
+tcpdump "tcp[tcpflags] & tcp-syn != 0"	Capture packets where SYN is set
+`tcpdump "tcp[tcpflags] & (tcp-syn	tcp-ack) != 0"`
+
+5. Size-Based Filtering
+
+> tcpdump -r traffic.pcap 'greater 15000' -n
+  Display packets from file traffic.pcap where packet size is greater than 15000 bytes.
